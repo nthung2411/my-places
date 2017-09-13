@@ -2,16 +2,16 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 @Component({
-  selector: 'page-place',
-  templateUrl: 'place.html',
+  selector: 'page-add-place',
+  templateUrl: 'add-place.html',
 })
-export class PlacePage {
+export class AddPlacePage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad PlacePage');
+    console.log('ionViewDidLoad AddPlacePage');
   }
 
 }
