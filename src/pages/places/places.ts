@@ -1,29 +1,42 @@
-import { LocationModel } from '../../models/location.model';
+import { PlaceService } from '../../services/place.service';
 import { PlaceModel } from '../../models/place.model';
-import { AddPlacePage } from '../add-place/add-place';
 import { PlacePage } from '../place/place';
 import { Component, OnInit } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
+import { AddPlacePage } from "../add-place/add-place";
 
 @Component({
   selector: 'page-places',
   templateUrl: 'places.html',
 })
 export class PlacesPage implements OnInit {
+
   public addPlacePage: AddPlacePage;
 
   public places: PlaceModel[] = [];
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
+  constructor(public navCtrl: NavController,
+    public placeService: PlaceService) { }
 
-  public ngOnInit(): void {
-    this.places = [
-      new PlaceModel('My Home', '', new LocationModel(10.8231, 106.6297)),
-      new PlaceModel('My Work', '', new LocationModel(10.8231, 106.6297))
-    ];
+  public ionViewWillEnter(): void {
+    this.onRefresh();
   }
 
   public openPlace(place: PlaceModel) {
     this.navCtrl.push(PlacePage, { place: place });
+  }
+
+  public onRefresh() {
+    this.places = this.placeService.loadPlaces();
+  }
+
+  public goToAddPlace() {
+    this.navCtrl.push(AddPlacePage);
+  }
+
+  public ngOnInit(): void {
+    this.placeService.fetchPlaces().then((places: PlaceModel[]) => {
+      this.places = places ? places : [];
+      this.placeService.places = this.places;
+    });
   }
 }

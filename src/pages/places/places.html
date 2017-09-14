@@ -6,17 +6,23 @@
 -->
 <ion-header>
   <ion-navbar>
-    <ion-title>places</ion-title>
+    <ion-buttons start>
+      <button ion-button
+        icon-only
+        (click)="onRefresh()">
+            <ion-icon name="refresh"></ion-icon>
+          </button>
+    </ion-buttons>
+    <ion-title>My Places</ion-title>
     <ion-buttons end>
       <button ion-button
         icon-only
-        [navPush]="addPlacePage">
+        (click)="goToAddPlace()">
         <ion-icon name="add"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
-
 
 <ion-content padding>
   <ion-list>
