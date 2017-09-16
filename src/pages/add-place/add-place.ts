@@ -13,11 +13,11 @@ import { PlaceService } from "../../services/place.service";
 export class AddPlacePage {
 
   public location = <LocationModel>{
-    lattitude: 10.8231,
+    latitude: 10.8231,
     longitude: 106.6297
   };
   public locationIsSet = false;
-
+  public currentLocation: LocationModel;
   constructor(
     public navCtrl: NavController,
     private modalCtrl: ModalController,
@@ -46,14 +46,15 @@ export class AddPlacePage {
     loader.present();
 
     this.geolocation.getCurrentPosition().then(res => {
-      this.location.lattitude = res.coords.latitude;
-      this.location.longitude = res.coords.longitude;
+      this.location = res.coords;
+      this.currentLocation = res.coords;
+
       this.locationIsSet = true;
 
       loader.dismiss();
     }).catch(error => {
       const toast = this.toastCtrl.create({
-        message: 'Could not get location, please pick it manually!',
+        message: 'Could not get location, please pick it manually!\n' + error.message,
         duration: 2500
       });
       toast.present();
@@ -67,7 +68,7 @@ export class AddPlacePage {
     form.reset();
 
     this.location = <LocationModel>{
-      lattitude: 10.8231,
+      latitude: 10.8231,
       longitude: 106.6297
     };
     this.locationIsSet = false;

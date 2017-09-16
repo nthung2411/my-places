@@ -23,7 +23,10 @@ export class SetLocationPage implements OnInit {
   }
 
   public onSetMarker(event: any) {
-    this.marker = new LocationModel(event.coords.lat, event.coords.lng);
+    this.marker = <LocationModel>{
+      latitude: event.coords.lat,
+      longitude: event.coords.lng
+    };
   }
 
   public onCancel() {
