@@ -1,0 +1,14 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{place.title}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <agm-map [latitude]="location.lattitude"
+    [longitude]="location.longitude"
+    [zoom]="16">
+    <agm-marker [latitude]="location.lattitude"
+      [longitude]="location.longitude"></agm-marker>
+  </agm-map>
+</ion-content>
