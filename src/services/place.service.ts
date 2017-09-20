@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
+import { Storage } from '@ionic/storage';
+
 import { LocationModel } from '../models/location.model';
 import { PlaceModel } from '../models/place.model';
-
-import { Storage } from '@ionic/storage';
 
 @Injectable()
 export class PlaceService {
@@ -13,11 +13,6 @@ export class PlaceService {
     public addPlace(title: string, description: string, location: LocationModel) {
         const place = new PlaceModel(title, description, location);
         this.places.push(place);
-        this.storage.set('places', this.places).then().catch(
-            err => {
-                this.places.splice(this.places.indexOf(place), 1);
-            }
-        );
     }
 
     public loadPlaces() {
@@ -26,6 +21,10 @@ export class PlaceService {
 
     public fetchPlaces(): Promise<any> {
         return this.storage.get('places');
+    }
+
+    public setPlace(places: PlaceModel[]): Promise<any> {
+        return this.storage.set('places', places);
     }
 
     public deletePlace(index: number) {
