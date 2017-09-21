@@ -31,11 +31,11 @@
                 <ion-icon name="locate"></ion-icon>
                 Locate me
                 </button>
-          <div *ngIf="currentLocation">
+          <div *ngIf="locationIsSet">
             <p>
-              {{currentLocation.latitude }}
+              {{location.latitude }}
             </p>
-            <p>{{currentLocation.longitude}}</p>
+            <p>{{location.longitude}}</p>
           </div>
         </ion-col>
         <ion-col col-6>

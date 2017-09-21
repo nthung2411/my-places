@@ -10,9 +10,11 @@ export class PlaceService {
 
     constructor(private storage: Storage) { }
 
-    public addPlace(title: string, description: string, location: LocationModel) {
+    public addPlace(title: string, description: string, location: LocationModel): Promise<any> {
         const place = new PlaceModel(title, description, location);
         this.places.push(place);
+
+        return this.storage.set('places', this.places);
     }
 
     public loadPlaces() {
@@ -21,10 +23,6 @@ export class PlaceService {
 
     public fetchPlaces(): Promise<any> {
         return this.storage.get('places');
-    }
-
-    public setPlace(places: PlaceModel[]): Promise<any> {
-        return this.storage.set('places', places);
     }
 
     public deletePlace(index: number) {

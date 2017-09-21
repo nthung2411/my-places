@@ -1,8 +1,3 @@
-export class LocationModel extends Coordinates {
-    /**
-     *
-     */
-    constructor() {
-        super();
-    }
+export class LocationModel {
+    constructor(public longitude: number, public latitude: number) { }
 }

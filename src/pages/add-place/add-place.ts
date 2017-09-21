@@ -17,7 +17,6 @@ export class AddPlacePage {
     longitude: 106.6297
   };
   public locationIsSet = false;
-  public currentLocation: LocationModel;
   constructor(
     public navCtrl: NavController,
     private modalCtrl: ModalController,
@@ -46,8 +45,8 @@ export class AddPlacePage {
     loader.present();
 
     this.geolocation.getCurrentPosition().then(res => {
-      this.location = res.coords;
-      this.currentLocation = res.coords;
+      this.location.longitude = res.coords.longitude;
+      this.location.latitude = res.coords.latitude;
 
       this.locationIsSet = true;
 
@@ -63,16 +62,36 @@ export class AddPlacePage {
   }
 
   public onSubmit(form: NgForm) {
-    this.placeService.addPlace(form.value.title, form.value.description, this.location);
-    const places = this.placeService.loadPlaces();
-    form.reset();
+    const loader = this.loadingCtrl.create({
+      content: 'Submitting...'
+    });
+    loader.present();
 
-    this.location = <LocationModel>{
-      latitude: 10.8231,
-      longitude: 106.6297
-    };
-    this.locationIsSet = false;
+    this.placeService.addPlace(form.value.title, form.value.description, this.location).then(
+      data => {
+        const toast = this.toastCtrl.create({
+          message: 'Success !',
+          duration: 2500
+        });
+        toast.present();
 
-    this.viewCtrl.dismiss();
+        form.reset();
+
+        this.location = <LocationModel>{
+          latitude: 10.8231,
+          longitude: 106.6297
+        };
+        this.locationIsSet = false;
+        loader.dismiss();
+        this.viewCtrl.dismiss();
+      }
+    ).catch(error => {
+      const toast = this.toastCtrl.create({
+        message: 'Could not get location, please pick it manually!\n' + error.message,
+        duration: 2500
+      });
+      toast.present();
+      loader.dismiss();
+    });
   }
 }
