@@ -27,8 +27,8 @@
 <ion-content padding>
   <ion-list>
     <button ion-item
-      *ngFor="let place of places"
-      (click)="openPlace(place)">
+      *ngFor="let place of places;let i = index"
+      (click)="openPlace(place, i)">
       {{place.title}}
     </button>
   </ion-list>

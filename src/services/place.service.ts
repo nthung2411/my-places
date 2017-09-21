@@ -6,7 +6,9 @@ import { PlaceModel } from '../models/place.model';
 
 @Injectable()
 export class PlaceService {
-    public places: PlaceModel[] = [];
+    private places: PlaceModel[] = [
+        new PlaceModel('A', 'A', new LocationModel(106, 10))
+    ];
 
     constructor(private storage: Storage) { }
 
@@ -17,6 +19,10 @@ export class PlaceService {
         return this.storage.set('places', this.places);
     }
 
+    public setPlaces(places: PlaceModel[]) {
+        this.places = places;
+    }
+
     public loadPlaces() {
         return this.places.slice();
     }
@@ -25,7 +31,9 @@ export class PlaceService {
         return this.storage.get('places');
     }
 
-    public deletePlace(index: number) {
+    public deletePlace(index: number): Promise<any> {
         this.places.splice(index, 1);
+
+        return this.storage.set('places', this.places);
     }
 }
