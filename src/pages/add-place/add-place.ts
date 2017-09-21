@@ -64,7 +64,7 @@ export class AddPlacePage {
 
   public onSubmit(form: NgForm) {
     this.placeService.addPlace(form.value.title, form.value.description, this.location);
-
+    const places = this.placeService.loadPlaces();
     form.reset();
 
     this.location = <LocationModel>{
