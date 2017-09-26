@@ -1,23 +1,26 @@
 import { Injectable } from '@angular/core';
+import { Storage } from '@ionic/storage';
+
 import { LocationModel } from '../models/location.model';
 import { PlaceModel } from '../models/place.model';
 
-import { Storage } from '@ionic/storage';
-
 @Injectable()
 export class PlaceService {
-    public places: PlaceModel[] = [];
+    private places: PlaceModel[] = [
+        new PlaceModel('A', 'A', new LocationModel(106, 10))
+    ];
 
     constructor(private storage: Storage) { }
 
-    public addPlace(title: string, description: string, location: LocationModel) {
+    public addPlace(title: string, description: string, location: LocationModel): Promise<any> {
         const place = new PlaceModel(title, description, location);
         this.places.push(place);
-        this.storage.set('places', this.places).then().catch(
-            err => {
-                this.places.splice(this.places.indexOf(place), 1);
-            }
-        );
+
+        return this.storage.set('places', this.places);
+    }
+
+    public setPlaces(places: PlaceModel[]) {
+        this.places = places;
     }
 
     public loadPlaces() {
@@ -28,7 +31,9 @@ export class PlaceService {
         return this.storage.get('places');
     }
 
-    public deletePlace(index: number) {
+    public deletePlace(index: number): Promise<any> {
         this.places.splice(index, 1);
+
+        return this.storage.set('places', this.places);
     }
 }

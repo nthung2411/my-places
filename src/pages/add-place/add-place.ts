@@ -13,11 +13,10 @@ import { PlaceService } from "../../services/place.service";
 export class AddPlacePage {
 
   public location = <LocationModel>{
-    lattitude: 10.8231,
+    latitude: 10.8231,
     longitude: 106.6297
   };
   public locationIsSet = false;
-
   constructor(
     public navCtrl: NavController,
     private modalCtrl: ModalController,
@@ -46,14 +45,15 @@ export class AddPlacePage {
     loader.present();
 
     this.geolocation.getCurrentPosition().then(res => {
-      this.location.lattitude = res.coords.latitude;
       this.location.longitude = res.coords.longitude;
+      this.location.latitude = res.coords.latitude;
+
       this.locationIsSet = true;
 
       loader.dismiss();
     }).catch(error => {
       const toast = this.toastCtrl.create({
-        message: 'Could not get location, please pick it manually!',
+        message: 'Could not get location, please pick it manually!\n' + error.message,
         duration: 2500
       });
       toast.present();
@@ -62,16 +62,36 @@ export class AddPlacePage {
   }
 
   public onSubmit(form: NgForm) {
-    this.placeService.addPlace(form.value.title, form.value.description, this.location);
+    const loader = this.loadingCtrl.create({
+      content: 'Submitting...'
+    });
+    loader.present();
 
-    form.reset();
+    this.placeService.addPlace(form.value.title, form.value.description, this.location).then(
+      data => {
+        const toast = this.toastCtrl.create({
+          message: 'Success !',
+          duration: 2500
+        });
+        toast.present();
 
-    this.location = <LocationModel>{
-      lattitude: 10.8231,
-      longitude: 106.6297
-    };
-    this.locationIsSet = false;
+        form.reset();
 
-    this.viewCtrl.dismiss();
+        this.location = <LocationModel>{
+          latitude: 10.8231,
+          longitude: 106.6297
+        };
+        this.locationIsSet = false;
+        loader.dismiss();
+        this.viewCtrl.dismiss();
+      }
+    ).catch(error => {
+      const toast = this.toastCtrl.create({
+        message: 'Could not get location, please pick it manually!\n' + error.message,
+        duration: 2500
+      });
+      toast.present();
+      loader.dismiss();
+    });
   }
 }

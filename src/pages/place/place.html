@@ -5,10 +5,28 @@
 </ion-header>
 
 <ion-content padding>
-  <agm-map [latitude]="location.lattitude"
+  <agm-map [latitude]="location.latitude"
     [longitude]="location.longitude"
     [zoom]="16">
-    <agm-marker [latitude]="location.lattitude"
+    <agm-marker [latitude]="location.latitude"
       [longitude]="location.longitude"></agm-marker>
   </agm-map>
+  <ion-list>
+    <ion-item>
+      <ion-label>latitude</ion-label>
+      <p item-content>{{location.latitude}}</p>
+    </ion-item>
+    <ion-item>
+      <ion-label>longitude</ion-label>
+      <p item-content>{{location.longitude}}</p>
+    </ion-item>
+    <ion-item>
+      <button ion-button
+        icon-left
+        (click)="removePlace()">
+      <ion-icon name="delete"></ion-icon>
+        Remove
+      </button>
+    </ion-item>
+  </ion-list>
 </ion-content>

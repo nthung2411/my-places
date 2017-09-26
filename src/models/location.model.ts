@@ -1,3 +1,3 @@
 export class LocationModel {
-    constructor(public lattitude: number, public longitude: number) { }
+    constructor(public longitude: number, public latitude: number) { }
 }

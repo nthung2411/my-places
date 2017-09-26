@@ -21,8 +21,8 @@ export class PlacesPage implements OnInit {
     this.onRefresh();
   }
 
-  public openPlace(place: PlaceModel) {
-    this.navCtrl.push(PlacePage, { place: place });
+  public openPlace(place: PlaceModel, index: number) {
+    this.navCtrl.push(PlacePage, { place: place, index: index });
   }
 
   public onRefresh() {
@@ -35,8 +35,12 @@ export class PlacesPage implements OnInit {
 
   public ngOnInit(): void {
     this.placeService.fetchPlaces().then((places: PlaceModel[]) => {
-      this.places = places ? places : [];
-      this.placeService.places = this.places;
+      if (places) {
+        this.places = places;
+        this.placeService.setPlaces(places);
+      } else {
+        this.places = this.placeService.loadPlaces();
+      }
     });
   }
 }
