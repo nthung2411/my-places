@@ -6,9 +6,7 @@ import { PlaceModel } from '../models/place.model';
 
 @Injectable()
 export class PlaceService {
-    private places: PlaceModel[] = [
-        new PlaceModel('A', 'A', new LocationModel(106, 10))
-    ];
+    private places: PlaceModel[] = [];
 
     constructor(private storage: Storage) { }
 
